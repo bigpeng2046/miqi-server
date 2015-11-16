@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<project name="Miqi Server" default="run">
+	<property name="debug" value="false"/>
+	
+	<property name="prog-name" value="Miqi.Server.exe"/>
+	<property name="build-dir" value="build" />
+	
+	<target name="build" depends="create-dir">
+		<csc target="exe" output="${build-dir}/${prog-name}" debug="${debug}">
+			<sources>
+				<include name="src/DataFrame.cs"/>
+				<include name="src/DataFrameHeader.cs"/>
+				<include name="src/SocketConnection.cs"/>
+				<include name="src/MiqiServer.cs"/>
+				<include name="Program.cs"/>
+			</sources>			
+		</csc>	
+	</target>
+
+	<target name="run" depends="build">	
+		<copy file="conf/template.config" tofile="${build-dir}/${prog-name}.config"/>
+		<exec program="${build-dir}/${prog-name}" basedir="."/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${build-dir}" />
+		<delete dir="bin" />
+		<delete dir="obj" />
+	</target>
+	
+	<target name="create-dir">
+		<mkdir dir="${build-dir}"/>
+	</target>	
+</project>
