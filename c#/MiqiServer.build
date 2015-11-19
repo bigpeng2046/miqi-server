@@ -9,11 +9,12 @@
 	<target name="build" depends="create-dir">
 		<csc target="exe" output="${build-dir}/${prog-name}" debug="${debug}">
 			<sources>
-				<include name="src/DataFrame.cs"/>
-				<include name="src/DataFrameHeader.cs"/>
-				<include name="src/SocketConnection.cs"/>
+				<include name="src/Frame.cs"/>
+				<include name="src/OpeningHandshakeHandler.cs"/>
+				<include name="src/WebSocketClient.cs"/>
+				<include name="src/WebSocketServer.cs"/>
 				<include name="src/MiqiServer.cs"/>
-				<include name="Program.cs"/>
+				<include name="Main.cs"/>
 			</sources>			
 		</csc>	
 	</target>

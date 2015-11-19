@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<project name="Test for Assembly" default="run">
+	<property name="debug" value="true"/>
+
+	<property name="prog-name" value="TestAsyncSocketListener.exe"/>
+	<property name="build-dir" value="build"/>
+	
+	<target name="build" depends="create-dir">
+		<csc target="exe" output="${build-dir}/${prog-name}" debug="${debug}">
+			<sources>
+				<include name="src/TestAsyncSocketListener.cs"/>
+			</sources>
+		</csc>
+	</target>
+
+	<target name="run" depends="build">
+		<exec program="${build-dir}/${prog-name}" basedir="."/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${build-dir}"/>
+	</target>
+
+	<target name="create-dir">
+		<mkdir dir="${build-dir}"/>
+	</target>
+</project>
