@@ -1,6 +1,12 @@
 <!doctype html>
-<title>WebSocket Client</title>
-<meta charset="utf-8">
+
+	<head>
+		<title>WebSocket Client</title>
+		<meta charset="utf-8">
+		<script type="text/javascript" src="qrcode.js"></script>
+		
+	</head>
+
     <body>
 
         <div>
@@ -10,6 +16,8 @@
             <button id=disconnect onclick=disconnect() disabled>Disconnect</button>
         </div>
 
+		<div id="qrcode" style="width:100px; height:100px; margin-left: 100px; margin-top:15px; margin-bottom:15px;"></div>
+		
         <div id=messageInputContainer style="visibility: collapse">
             <span>Enter Message : </span>
             <input id=message type=text>
@@ -40,10 +48,12 @@
         };
 
         webSocket.onmessage = function(e){
-            if(typeof e.data === "string")
+            if(typeof e.data === "string") {
+				makeCode(e.data);
                 log("Received : " + e.data);
-            else
+            } else {
                 log("Binary message received...");
+			}
         };
         webSocket.onclose = function(e){
             log("Connection Closed...");
@@ -81,5 +91,15 @@
         var message = messageInput.value;
         log("Sending : " + message);
         webSocket.send(message);
+
     };
+
+	var qrcode = new QRCode(document.getElementById("qrcode"), {
+		width : 100,
+		height : 100
+	});
+
+	function makeCode(text) {		
+		qrcode.makeCode(text);
+	}	
 </script>

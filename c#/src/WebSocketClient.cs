@@ -26,7 +26,7 @@ namespace Miqi.Net
         public WebSocketClient(string id, TcpClient tcpClient)
         {
             m_tcpClient = tcpClient;
-            Id = id;
+            this.id = id;
             m_isConnected = true;
         }
 
