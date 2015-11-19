@@ -9,8 +9,8 @@ namespace Miqi.Net
         private readonly TcpClient m_tcpClient;
         private bool m_isConnected;
 
-		private Guid id;
-        public Guid Id {
+		private string id;
+        public string Id {
 			get { return this.id; } 
 			set { this.id = value; }
 		}
@@ -23,7 +23,7 @@ namespace Miqi.Net
 		public event ReceivedBinaryDataHandler ReceivedBinaryData;
 		public event DisconnectedHandler Disconnected;
 		
-        public WebSocketClient(Guid id, TcpClient tcpClient)
+        public WebSocketClient(string id, TcpClient tcpClient)
         {
             m_tcpClient = tcpClient;
             Id = id;

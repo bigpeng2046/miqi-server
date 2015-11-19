@@ -49,7 +49,18 @@ namespace Miqi.Net {
         private void OnReceivedTextualData(WebSocketClient client, string data)
         {
             Console.WriteLine("Client {0} Received Message: {1}", client.Id, data);
-            client.Send(data);
+			if ("LOGIN".Equals(data.ToUpper())) {
+				client.Send(client.Id.ToString());
+			} else if (data.StartsWith("set:")) {
+				WebSocketClient reqClient = m_server.GetClientById(data.Substring(4));
+				if (reqClient != null) {
+					reqClient.Send("user:{0}, password:{1}");
+				} else {
+					Console.WriteLine("Cannot find the client: {0}", data.Substring(4));
+				}
+			} else {
+				client.Send(data);
+			}
         }
     }
 }

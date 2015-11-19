@@ -10,7 +10,7 @@ namespace Miqi.Net
     {
         private bool m_isStarted;
         private readonly TcpListener m_tcpListener;
-        private readonly Dictionary<Guid, WebSocketClient> m_clients = new Dictionary<Guid, WebSocketClient>(); 
+        private readonly Dictionary<string, WebSocketClient> m_clients = new Dictionary<string, WebSocketClient>(); 
         private readonly object m_sync = new object();
 
         public event Action<WebSocketClient> OnClientConnected = delegate { };
@@ -46,16 +46,24 @@ namespace Miqi.Net
                 if (!m_isStarted)
                     return;
 
-                m_isStarted = false;
-                m_tcpListener.Stop();
-
                 foreach (WebSocketClient client in m_clients.Values)
                 {
                     client.Disconnect();
                 }
+				
+                m_tcpListener.Stop();
+                m_isStarted = false;
             }
         }
 
+		public WebSocketClient GetClientById(string id) {
+			try {
+				return m_clients[id];
+			} catch (Exception) {
+				return null;
+			}
+		}
+		
         private void OnAcceptClient(IAsyncResult asyncResult)
         {
             if (!m_isStarted)
@@ -122,7 +130,7 @@ namespace Miqi.Net
         {
             TcpClient client = (TcpClient)e.UserToken;
 
-            WebSocketClient wsClient = new WebSocketClient(Guid.NewGuid(), client);
+            WebSocketClient wsClient = new WebSocketClient(Guid.NewGuid().ToString(), client);
             wsClient.Disconnected += OnClientDisconnected;
 
             m_clients.Add(wsClient.Id, wsClient);
