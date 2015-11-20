@@ -9,7 +9,7 @@ namespace Miqi
     {
         static void Main()
         {
-            MiqiServer server = new MiqiServer(IPAddress.Loopback, 54321);
+            MiqiServer server = new MiqiServer(54321);
             server.Start();
 
             Console.WriteLine("Press any key to exit...");

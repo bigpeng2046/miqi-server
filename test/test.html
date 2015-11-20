@@ -1,0 +1,36 @@
+<!doctype html>
+
+	<head>
+		<title>Test for javascript</title>
+		<meta charset="utf-8">
+	</head>
+
+    <body>
+
+        <div>
+            <button onclick=TestMe()>Test</button>
+        </div>
+
+    </body>
+
+<script>
+
+function TestMe() {
+	var temp = ParseResponse("host:192.168.1.1\r\nport:12345\r\n");
+	alert(temp["host"]);
+}
+
+function ParseResponse(response) {
+	var headers = {};
+	var pairs = response.split("\r\n");	
+	var pair;
+	
+	for (pair in pairs) {
+		var temp = pairs[pair].split(":");
+		if (temp)
+			headers[temp[0]] = temp[1];
+	}
+	
+	return headers;
+}
+</script>

@@ -11,12 +11,16 @@ namespace Miqi.Net {
 
     public class MiqiServer
     {
+		private readonly int m_port;
+		private readonly IPAddress[] m_ipAddresses;
         private readonly WebSocketServer m_server;
 
-        public MiqiServer(IPAddress address, int port)
+        public MiqiServer(int port)
         {
-            m_server = new WebSocketServer(address, port);
+			m_port = port;
+            m_server = new WebSocketServer(IPAddress.Any, port);
             m_server.OnClientConnected += OnClientConnected;
+			m_ipAddresses = GetLocalIPAddresses();
         }
 
         public void Start()
@@ -50,7 +54,7 @@ namespace Miqi.Net {
         {
             Console.WriteLine("Client {0} Received Message: {1}", client.Id, data);
 			if ("LOGIN".Equals(data.ToUpper())) {
-				client.Send(client.Id.ToString());
+				client.Send(BuildLoginResponse(client.Id));
 			} else if (data.StartsWith("set:")) {
 				WebSocketClient reqClient = m_server.GetClientById(data.Substring(4));
 				if (reqClient != null) {
@@ -62,5 +66,37 @@ namespace Miqi.Net {
 				client.Send(data);
 			}
         }
+		
+        private static IPAddress[] GetLocalIPAddresses()
+        {
+			try {
+				string hostName = Dns.GetHostName();
+				IPHostEntry ipEntry = Dns.GetHostEntry(hostName);
+
+				foreach (IPAddress ip in ipEntry.AddressList)
+				{
+					Console.WriteLine("{0}", ip);
+					//IPV4
+					// if (ip.AddressFamily == AddressFamily.InterNetwork)
+					//	return ip;
+				}
+				
+				return ipEntry.AddressList;
+			}
+			catch (Exception)
+			{
+				return null;
+			}
+        }
+		
+		private string BuildLoginResponse(string clientId) {
+			StringBuilder builder = new StringBuilder();
+			
+			builder.Append(String.Format("host:{0}\r\n", m_ipAddresses[0].ToString()));
+			builder.Append(String.Format("port:{0}\r\n", m_port));
+			builder.Append(String.Format("id:{0}\r\n", clientId));
+			
+			return builder.ToString();
+		}
     }
 }
