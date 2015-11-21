@@ -15,12 +15,18 @@ namespace Miqi.Net {
 		private readonly IPAddress[] m_ipAddresses;
         private readonly WebSocketServer m_server;
 
+		private MiqiMessageHandlerCollection m_msgHandlers;
+		
         public MiqiServer(int port)
         {
 			m_port = port;
             m_server = new WebSocketServer(IPAddress.Any, port);
             m_server.OnClientConnected += OnClientConnected;
 			m_ipAddresses = GetLocalIPAddresses();
+			
+			m_msgHandlers = new MiqiMessageHandlerCollection();
+			m_msgHandlers.AddHandler(MiqiMessage.GET_SERVER_INFO, HandleGetServerInfoMessage);
+			m_msgHandlers.AddHandler(MiqiMessage.SET_CREDENTIAL, HandleSetCredentialMessage);
         }
 
         public void Start()
@@ -53,23 +59,23 @@ namespace Miqi.Net {
         private void OnReceivedTextualData(WebSocketClient client, string data)
         {
             Console.WriteLine("Client {0} Received Message: {1}", client.Id, data);
-			if ("LOGIN".Equals(data.ToUpper())) {
-				client.Send(BuildLoginResponse(client.Id));
-			} else if (data.StartsWith("set:")) {
-				WebSocketClient reqClient = m_server.GetClientById(data.Substring(4));
-				if (reqClient != null) {
-					reqClient.Send("user:{0}, password:{1}");
-				} else {
-					Console.WriteLine("Cannot find the client: {0}", data.Substring(4));
-				}
-			} else {
-				client.Send(data);
+			
+			try
+			{
+				MiqiMessage message = MiqiMessage.BuildFromString(data);
+				m_msgHandlers.HandleMessage(client, message);
 			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("OnReceivedTextualData: {0}", ex.Message);
+				client.Disconnect();
+			}			
         }
 		
         private static IPAddress[] GetLocalIPAddresses()
         {
-			try {
+			try
+			{
 				string hostName = Dns.GetHostName();
 				IPHostEntry ipEntry = Dns.GetHostEntry(hostName);
 
@@ -89,14 +95,22 @@ namespace Miqi.Net {
 			}
         }
 		
-		private string BuildLoginResponse(string clientId) {
-			StringBuilder builder = new StringBuilder();
-			
-			builder.Append(String.Format("host:{0}\r\n", m_ipAddresses[0].ToString()));
-			builder.Append(String.Format("port:{0}\r\n", m_port));
-			builder.Append(String.Format("id:{0}\r\n", clientId));
-			
-			return builder.ToString();
+		private void HandleGetServerInfoMessage(WebSocketClient client, MiqiMessage message)
+		{
+			MiqiMessage resp = MiqiMessage.BuildGetSeverInfoResponse(m_ipAddresses[0].ToString(), m_port, client.Id);
+			client.Send(resp.ToString());
+		}
+		
+		private void HandleSetCredentialMessage(WebSocketClient client, MiqiMessage message)
+		{
+			string reqClientId = message.GetHeader("ClientId");
+			WebSocketClient reqClient = m_server.GetClientById(reqClientId);
+			if (reqClient != null) {
+				reqClient.Send("user:{0}, password:{1}");
+				client.Disconnect();
+			} else {
+				Console.WriteLine("Cannot find the client: {0}", reqClientId);
+			}			
 		}
     }
 }

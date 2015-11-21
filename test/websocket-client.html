@@ -16,7 +16,7 @@
             <button id=disconnect onclick=disconnect() disabled>Disconnect</button>
         </div>
 
-		<div id="qrcode" style="width:100px; height:100px; margin-left: 100px; margin-top:15px; margin-bottom:15px;"></div>
+		<div id="qrcode" style="width:150px; height:150px; margin-left: 100px; margin-top:15px; margin-bottom:15px;"></div>
 		
         <div id=messageInputContainer style="visibility: collapse">
             <span>Enter Message : </span>
@@ -50,7 +50,7 @@
         webSocket.onmessage = function(e){
             if(typeof e.data === "string") {
 				makeCode(e.data);
-                log("Received : " + e.data);
+                log("Received : " + e.data +"(" + e.data.length + ")");
             } else {
                 log("Binary message received...");
 			}
@@ -95,8 +95,8 @@
     };
 
 	var qrcode = new QRCode(document.getElementById("qrcode"), {
-		width : 100,
-		height : 100
+		width : 150,
+		height : 150
 	});
 
 	function makeCode(text) {		

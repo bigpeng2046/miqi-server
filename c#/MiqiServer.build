@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="Miqi Server" default="run">
-	<property name="debug" value="false"/>
+	<property name="debug" value="true"/>
 	
 	<property name="prog-name" value="Miqi.Server.exe"/>
 	<property name="build-dir" value="build" />
@@ -11,6 +11,8 @@
 			<sources>
 				<include name="src/Frame.cs"/>
 				<include name="src/OpeningHandshakeHandler.cs"/>
+				<include name="src/MiqiMessage.cs"/>
+				<include name="src/MiqiMessageHandlerCollection.cs"/>
 				<include name="src/WebSocketClient.cs"/>
 				<include name="src/WebSocketServer.cs"/>
 				<include name="src/MiqiServer.cs"/>

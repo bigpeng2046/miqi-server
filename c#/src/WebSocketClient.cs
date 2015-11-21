@@ -38,9 +38,11 @@ namespace Miqi.Net
             socketAsyncEventArgs.Completed += OnDataReceived;
             socketAsyncEventArgs.SetBuffer(buffer, 0, buffer.Length);
 
-            bool isAsync = m_tcpClient.Client.ReceiveAsync(socketAsyncEventArgs);
-            if (!isAsync)
-                OnDataReceived(m_tcpClient, socketAsyncEventArgs);
+			if (m_tcpClient.Client != null) {
+				bool isAsync = m_tcpClient.Client.ReceiveAsync(socketAsyncEventArgs);
+				if (!isAsync)
+					OnDataReceived(m_tcpClient, socketAsyncEventArgs);
+			}
         }
 
         private void OnDataReceived(object sender, SocketAsyncEventArgs e)
