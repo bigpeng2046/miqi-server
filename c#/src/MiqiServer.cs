@@ -106,15 +106,11 @@ namespace Miqi.Net {
 			string reqClientId = message.GetHeader("ClientId");
 			WebSocketClient reqClient = m_server.GetClientById(reqClientId);
 			if (reqClient != null) {
-				reqClient.Send(BuildCredentialMessage(message));
+				reqClient.Send(MiqiMessage.BuildSetCredential(message).ToString());
 				client.Disconnect();
 			} else {
 				Console.WriteLine("Cannot find the client: {0}", reqClientId);
 			}			
-		}
-		
-		private string BuildCredentialMessage(MiqiMessage message) {
-			return String.Format("user:{0}, password:{1}", message.GetHeader("UserName"), message.GetHeader("Password"));
 		}
     }
 }

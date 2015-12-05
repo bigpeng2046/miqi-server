@@ -71,6 +71,16 @@ namespace Miqi.Net
 			return miqiMsg;
 		}
 		
+		public static MiqiMessage BuildSetCredential(MiqiMessage message) {
+			MiqiMessage miqiMsg = new MiqiMessage(MiqiMessage.SET_CREDENTIAL,
+									MiqiMessage.DEFAULT_MIQI_PROTOCOL);
+									
+			miqiMsg.AddHeader("UserName", message.GetHeader("UserName"));
+			miqiMsg.AddHeader("Password", message.GetHeader("Password"));
+			
+			return miqiMsg;
+		}
+		
 		public static MiqiMessage BuildFromString(string message)
 		{
 			string command;
