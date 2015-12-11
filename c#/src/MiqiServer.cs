@@ -58,7 +58,7 @@ namespace Miqi.Net {
 
         private void OnReceivedTextualData(WebSocketClient client, string data)
         {
-            Console.WriteLine("Client {0} Received Message: {1}", client.Id, data);
+            Console.WriteLine("Client {0} Received message...", client.Id);
 			
 			try
 			{
