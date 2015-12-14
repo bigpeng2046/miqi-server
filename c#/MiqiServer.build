@@ -16,9 +16,26 @@
 				<include name="src/WebSocketClient.cs"/>
 				<include name="src/WebSocketServer.cs"/>
 				<include name="src/MiqiServer.cs"/>
+
+				<!--
+				<include name="src/MainForm.cs"/>
+				<include name="src/MainForm.Designer.cs"/>
+				-->
+				
 				<include name="Main.cs"/>
-			</sources>			
+			</sources>
+			
+				<!--
+			<resources> 
+				<include name="${build-dir}/res/Miqi.MainForm.resources"/>
+			</resources>
+				-->
+			
 		</csc>	
+	</target>
+
+	<target name="build-res" depends="create-dir">
+		<resgen usesourcepath="true" input="src/MainForm.resx" output="${build-dir}/res/Miqi.MainForm.resources"/>		
 	</target>
 
 	<target name="run" depends="build">	
@@ -34,5 +51,6 @@
 	
 	<target name="create-dir">
 		<mkdir dir="${build-dir}"/>
+		<mkdir dir="${build-dir}/res"/>
 	</target>	
 </project>

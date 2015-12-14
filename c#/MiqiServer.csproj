@@ -7,8 +7,8 @@
     <ProjectGuid>{7D1EF1B7-DDDD-4E63-94FE-AC931E9C2F2D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Notapack</RootNamespace>
-    <AssemblyName>Notapack</AssemblyName>
+    <RootNamespace>Miqi</RootNamespace>
+    <AssemblyName>Miqi</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,30 +45,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="conf\software.conf" />
     <None Include="conf\template.config" />
-    <None Include="Gd.Install.build" />
-    <None Include="i18n\Gd.Install.InstallationForm.properties" />
-    <None Include="Rakefile" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="images\gd-logo.ico" />
-    <Content Include="lib\Gd.Common.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Install.cs" />
-    <Compile Include="src\InstallationForm.cs">
+    <Compile Include="src\Frame.cs" />
+    <Compile Include="src\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="src\InstallationForm.Designer.cs">
-      <DependentUpon>InstallationForm.cs</DependentUpon>
+    <Compile Include="src\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\Version.cs" />
+    <Compile Include="src\MiqiMessage.cs" />
+    <Compile Include="src\MiqiMessageHandlerCollection.cs" />
+    <Compile Include="src\MiqiServer.cs" />
+    <Compile Include="src\OpeningHandshakeHandler.cs" />
+    <Compile Include="src\WebSocketClient.cs" />
+    <Compile Include="src\WebSocketServer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="src\InstallationForm.resx">
-      <DependentUpon>InstallationForm.cs</DependentUpon>
+    <EmbeddedResource Include="src\MainForm.resx">
       <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

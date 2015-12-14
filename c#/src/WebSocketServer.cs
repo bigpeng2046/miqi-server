@@ -13,6 +13,8 @@ namespace Miqi.Net
         private readonly Dictionary<string, WebSocketClient> m_clients = new Dictionary<string, WebSocketClient>(); 
         private readonly object m_sync = new object();
 
+		private readonly Random rand = new Random(unchecked((int)DateTime.Now.Ticks));
+
         public event Action<WebSocketClient> OnClientConnected = delegate { };
 
         public WebSocketServer(IPAddress address, int port)
@@ -130,7 +132,7 @@ namespace Miqi.Net
         {
             TcpClient client = (TcpClient)e.UserToken;
 
-            WebSocketClient wsClient = new WebSocketClient(Guid.NewGuid().ToString(), client);
+            WebSocketClient wsClient = new WebSocketClient("" + rand.Next(), client);
             wsClient.Disconnected += OnClientDisconnected;
 
             m_clients.Add(wsClient.Id, wsClient);

@@ -1,5 +1,7 @@
 using System;
 using System.Net;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 using Miqi.Net;
 
@@ -17,5 +19,16 @@ namespace Miqi
 
             server.Stop();
         }
+
+		/*
+        [STAThread]
+        public static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            MainForm theForm = new MainForm();
+            Application.Run(theForm);
+        }
+		*/
     }
 }
