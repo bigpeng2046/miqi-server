@@ -7,7 +7,7 @@
 	<property name="build-dir" value="build" />
 	
 	<target name="build" depends="create-dir">
-		<csc target="exe" output="${build-dir}/${prog-name}" debug="${debug}">
+		<csc target="winexe" output="${build-dir}/${prog-name}" debug="${debug}">
 			<sources>
 				<include name="src/Frame.cs"/>
 				<include name="src/OpeningHandshakeHandler.cs"/>
@@ -17,19 +17,15 @@
 				<include name="src/WebSocketServer.cs"/>
 				<include name="src/MiqiServer.cs"/>
 
-				<!--
 				<include name="src/MainForm.cs"/>
 				<include name="src/MainForm.Designer.cs"/>
-				-->
 				
 				<include name="Main.cs"/>
 			</sources>
 			
-				<!--
 			<resources> 
 				<include name="${build-dir}/res/Miqi.MainForm.resources"/>
 			</resources>
-				-->
 			
 		</csc>	
 	</target>

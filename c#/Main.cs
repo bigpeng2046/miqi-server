@@ -9,6 +9,7 @@ namespace Miqi
 {
     class Program
     {
+		/*
         static void Main()
         {
             MiqiServer server = new MiqiServer(54321);
@@ -19,8 +20,8 @@ namespace Miqi
 
             server.Stop();
         }
-
-		/*
+		*/
+		
         [STAThread]
         public static void Main()
         {
@@ -29,6 +30,5 @@ namespace Miqi
             MainForm theForm = new MainForm();
             Application.Run(theForm);
         }
-		*/
     }
 }
